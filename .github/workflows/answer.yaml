@@ -1,0 +1,55 @@
+name: Multi-Repository Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      WEBHOOK_URL: https://myhook.com/ginie
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Load GitHub Token
+      run: echo "export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+    - name: Read repository list from file
+      id: read-repos
+      run: echo "::set-output name=repos::$(cat repos.txt)"
+
+    - name: Read ignored repository list from file
+      id: read-ignored-repos
+      run: echo "::set-output name=ignored-repos::$(cat repos.ignored)"
+
+    - name: List repositories
+      run: |
+        # Access the list of repositories from the output variable
+        IFS=',' read -ra repositories <<< "${{ steps.read-repos.outputs.repos }}"
+        IFS=',' read -ra ignored_repositories <<< "${{ steps.read-ignored-repos.outputs.ignored-repos }}"
+        total_repositories=${#repositories[@]}
+        processed_repositories=0
+
+        for repo in "${repositories[@]}"; do
+          # Check if the repository is in the ignored list
+          if [[ " ${ignored_repositories[@]} " =~ " $repo " ]]; then
+            echo "Skipping $repo (listed in repo.ignored)"
+          else
+            processed_repositories=$((processed_repositories + 1))
+            progress=$((processed_repositories * 100 / total_repositories))
+            echo "Checking out $repo"
+            git clone "https://github.com/$repo.git"
+
+            # Run your bash command in each repository
+            (cd "$repo" && bash your-command.sh)
+
+            # Post progress to webhook
+            #curl -X POST "$WEBHOOK_URL?progress=$progress"
+          fi
+        done
