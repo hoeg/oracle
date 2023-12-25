@@ -14,6 +14,8 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       WEBHOOK_URL: https://myhook.com/ginie
+      REPOS_FILE: repos.txt
+      IGNORED_REPOS_FILE: repo.ignored
 
     steps:
     - name: Checkout code
@@ -23,12 +25,11 @@ jobs:
       run: echo "export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
     - name: Read repository list from file
-      id: read-repos
-      run: echo "::set-output name=repos::$(cat repos.txt)"
+      run: echo "REPOS=$(cat ${{ env.REPOS_FILE }})" >> $GITHUB_ENV
 
     - name: Read ignored repository list from file
-      id: read-ignored-repos
-      run: echo "::set-output name=ignored-repos::$(cat repos.ignored)"
+      run: echo "IGNORED_REPOS=$(cat ${{ env.IGNORED_REPOS_FILE }})" >> $GITHUB_ENV
+
 
     - name: List repositories
       run: |
