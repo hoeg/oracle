@@ -36,7 +36,9 @@ jobs:
         # Access the list of repositories from the output variable
         echo "Repos: $REPOS"
         repositories=$(echo "$REPOS" | tr ',' '\n')
+        echo "list: $repositories"
         ignored_repositories=$(echo "$IGNORED_REPOS" | tr ',' '\n')
+        echo "ignored: $ignored_repositories"
         total_repositories=${#repositories[@]}
         processed_repositories=0
         
