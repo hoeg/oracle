@@ -39,8 +39,6 @@ jobs:
         echo "list: $repositories"
         ignored_repositories=$(echo "$IGNORED_REPOS" | tr ',' '\n')
         echo "ignored: $ignored_repositories"
-        total_repositories=${#repositories[@]}
-        processed_repositories=0
         
         echo "Start asking\n"
 
@@ -49,8 +47,6 @@ jobs:
           if [[ " ${ignored_repositories[@]} " =~ " $repo " ]]; then
             echo "Skipping $repo (listed in repo.ignored)"
           else
-            processed_repositories=$((processed_repositories + 1))
-            progress=$((processed_repositories * 100 / total_repositories))
             echo "Checking out $repo"
             git clone "https://github.com/$repo.git"
 
