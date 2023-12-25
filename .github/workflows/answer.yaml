@@ -34,10 +34,13 @@ jobs:
     - name: List repositories
       run: |
         # Access the list of repositories from the output variable
+        echo "Repos: $REPOS\n"
         IFS=',' read -ra repositories <<< "$REPOS"
         IFS=',' read -ra ignored_repositories <<< "$IGNORED_REPOS"
         total_repositories=${#repositories[@]}
         processed_repositories=0
+        
+        echo "Start asking\n"
 
         for repo in "${repositories[@]}"; do
           # Check if the repository is in the ignored list

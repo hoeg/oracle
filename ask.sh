@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Ask the question\n"
+
 if [ -z "$1" ]; then
   echo "Error: First argument is missing."
   exit 1
