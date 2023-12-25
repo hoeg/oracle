@@ -15,7 +15,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       WEBHOOK_URL: https://myhook.com/ginie
       REPOS_FILE: repos.txt
-      IGNORED_REPOS_FILE: repo.ignored
+      IGNORED_REPOS_FILE: repos.ignored
 
     steps:
     - name: Checkout code
