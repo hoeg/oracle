@@ -1,17 +1,29 @@
 #!/bin/bash
 
-echo "Ask the question\n"
+REPOS=()
+while IFS= read -r line || [[ -n "$line" ]]; do
+    REPOS+=("$line")
+done < "repos.txt"
 
-if [ -z "$1" ]; then
-  echo "Error: First argument is missing."
-  exit 1
-fi
+IGNORED_REPOS=()
+while IFS= read -r line || [[ -n "$line" ]]; do
+    IGNORED_REPOS+=("$line")
+done < "repos.ignored"
 
-if ! [[ "$1" =~ ^[a-zA-Z]+$ ]]; then
-  echo "Error: First argument is not a valid string."
-  exit 1
-fi
+echo "Start asking"
 
-REPO=$1
+for repo in "${REPOS[@]}"; do
+    # Check if the repository is in the ignored list
+    if [[ " ${IGNORED_REPOS[@]} " =~ " $repo " ]]; then
+        echo "Skipping $repo (listed in repos.ignored)"
+    else
+        echo "Checking out $repo"
+        #git clone "https://github.com/$repo.git"
+        echo "clone $repo"
 
-semgrep scan --config questions/ $REPO
+        # Run your bash command in each repository
+        repo_name=$(echo "$repo" | cut -d'/' -f2)
+        echo "ask about $repo_name"
+        semgrep scan --config questions/ $repo_name
+    fi
+done
