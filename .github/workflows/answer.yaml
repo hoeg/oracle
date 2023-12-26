@@ -1,4 +1,4 @@
-name: Multi-Repository Workflow
+name: Oracle
 
 on:
   push:
@@ -24,6 +24,6 @@ jobs:
     - name: Load GitHub Token
       run: echo "export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
-    - name: List repositories
+    - name: Ask the all important questions
       run: |
         bash ask.sh
