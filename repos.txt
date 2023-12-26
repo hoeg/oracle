@@ -1,3 +1,2 @@
 hoeg/semhook
-some/repo
 hoeg/terraperm

@@ -33,25 +33,4 @@ jobs:
 
     - name: List repositories
       run: |
-        # Access the list of repositories from the output variable
-        echo "Repos: $REPOS"
-        IFS=',' read -ra repositories <<< "$REPOS"
-        echo "list: $repositories"
-        IFS=',' read -ra ignored_repositories <<< "$IGNORED_REPOS"
-        echo "ignored: $ignored_repositories"
-        
-        echo "Start asking\n"
-
-        for repo in "${repositories[@]}"; do
-          # Check if the repository is in the ignored list
-          if [[ " ${ignored_repositories[@]} " =~ " $repo " ]]; then
-            echo "Skipping $repo (listed in repo.ignored)"
-          else
-            echo "Checking out $repo"
-            git clone "https://github.com/$repo.git"
-
-            # Run your bash command in each repository
-            repo_name=$(echo "$repo" | cut -d'/' -f2)
-            bash ask.sh $repo_name
-          fi
-        done
+        bash ask.sh
