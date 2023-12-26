@@ -18,7 +18,7 @@ for repo in "${REPOS[@]}"; do
         echo "Skipping $repo (listed in repos.ignored)"
     else
         echo "Checking out $repo"
-        #git clone "https://github.com/$repo.git"
+        git clone "https://github.com/$repo.git"
         echo "clone $repo"
 
         # Run your bash command in each repository
