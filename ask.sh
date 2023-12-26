@@ -13,7 +13,6 @@ done < "repos.ignored"
 echo "Start asking"
 
 for repo in "${REPOS[@]}"; do
-    # Check if the repository is in the ignored list
     if [[ " ${IGNORED_REPOS[@]} " =~ " $repo " ]]; then
         echo "Skipping $repo (listed in repos.ignored)"
     else
@@ -21,7 +20,6 @@ for repo in "${REPOS[@]}"; do
         git clone "https://github.com/$repo.git"
         echo "clone $repo"
 
-        # Run your bash command in each repository
         repo_name=$(echo "$repo" | cut -d'/' -f2)
         echo "ask about $repo_name"
         semgrep scan --config questions/ $repo_name
