@@ -24,13 +24,6 @@ jobs:
     - name: Load GitHub Token
       run: echo "export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
-    - name: Read repository list from file
-      run: echo "REPOS=$(cat ${{ env.REPOS_FILE }})" >> $GITHUB_ENV
-
-    - name: Read ignored repository list from file
-      run: echo "IGNORED_REPOS=$(cat ${{ env.IGNORED_REPOS_FILE }})" >> $GITHUB_ENV
-
-
     - name: List repositories
       run: |
         bash ask.sh
